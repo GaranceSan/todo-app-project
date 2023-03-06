@@ -59,8 +59,7 @@ function App() {
 
   function deleteTodo(id){
     const deletedTodos = todos.filter((todo) => todo.id !== id );
-    setTodos(deletedTodos)
-      
+    setTodos(deletedTodos) 
     }
   
 
