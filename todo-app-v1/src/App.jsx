@@ -72,7 +72,7 @@ function App() {
       <Form />
 
       {todos.length?(
-        todos.map(todo => {
+        todos.map((todo) => {
           return <TodoItem 
             key={todo.id} 
             todoItem={todo} 
