@@ -57,6 +57,13 @@ function App() {
     setTodos(newTodos)
   } //end of toggleTodo
 
+  function deleteTodo(id){
+    const deletedTodos = todos.filter((todo) => todo.id !== id );
+    setTodos(deletedTodos)
+      
+    }
+  
+
   //JSX 
   return (
     <>
@@ -67,7 +74,12 @@ function App() {
 
       {todos.length?(
         todos.map(todo => {
-          return <TodoItem key={todo.id} todoItem={todo} toggleFn={toggleTodo}/>
+          return <TodoItem 
+            key={todo.id} 
+            todoItem={todo} 
+            toggleFn={toggleTodo} 
+            deleteFn={deleteTodo}
+          />
         })
       ):null}
 
@@ -81,7 +93,7 @@ export default App;
 //components 
 
 // create a new component called todo.item
-function TodoItem({todoItem, toggleFn}){
+function TodoItem({todoItem, toggleFn, deleteFn}){
   return(
   <li key={todoItem.id}> 
          
@@ -89,7 +101,7 @@ function TodoItem({todoItem, toggleFn}){
   <span>{todoItem.created}</span>
   {todoItem.task}
  
-  <button><FiTrash/></button>
+  <button onClick={()=> deleteFn(todoItem.id)}><FiTrash/></button>
   </li>)
 
 }
