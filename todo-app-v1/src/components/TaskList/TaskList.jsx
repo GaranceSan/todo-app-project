@@ -1,16 +1,26 @@
 
-function TaskList({name,tasks}){
+import React from "react";
+
+
+
+function TaskList({tasks}){
+
+  
     return(
       <>
-      <h2>{name}</h2>
+      <h2>Liste :</h2>
       <ul>
-        {name && tasks ? 
+        {tasks ? 
         (
           tasks.map((taskItem)=>{
           return (
           <li key={taskItem.id}> 
+         
           <span>{taskItem.done? "done" : "X"}</span>
-          {taskItem.task}</li>)
+          <span>{taskItem.created}</span>
+          {taskItem.task}
+          </li>)
+          
         })
         ) : 
         (null)}
