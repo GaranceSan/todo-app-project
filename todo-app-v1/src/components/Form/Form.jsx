@@ -17,7 +17,7 @@ function Form({ handleSubmit }) {
       </div>
       <div>
         <button className={styles.button} type="submit">
-          Submit
+          Add
         </button>
       </div>
     </form>

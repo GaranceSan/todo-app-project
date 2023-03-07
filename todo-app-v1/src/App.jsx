@@ -1,8 +1,8 @@
 import "./App.css";
 import React from "react";
-import { FiTrash } from "react-icons/fi";
+
 import { Form } from "./components/Form";
-import { TaskList } from "./components/TaskList";
+import { TodoItem } from "./components/TodoItem";
 
 function App() {
   const [todos, setTodos] = React.useState([]);
@@ -100,18 +100,18 @@ export default App;
 //components
 
 // create a new component called todo.item
-function TodoItem({ todoItem, toggleFn, deleteFn }) {
-  return (
-    <li key={todoItem.id}>
-      <button onClick={() => toggleFn(todoItem.id)}>
-        {todoItem.done ? "done" : "X"}
-      </button>
-      <span>{todoItem.created}</span>
-      {todoItem.task}
+// function TodoItem({ todoItem, toggleFn, deleteFn }) {
+//   return (
+//     <li key={todoItem.id}>
+//       <button onClick={() => toggleFn(todoItem.id)}>
+//         {todoItem.done ? "done" : "X"}
+//       </button>
+//       <span>{todoItem.created}</span>
+//       {todoItem.task}
 
-      <button onClick={() => deleteFn(todoItem.id)}>
-        <FiTrash />
-      </button>
-    </li>
-  );
-}
+//       <button onClick={() => deleteFn(todoItem.id)}>
+//         <FiTrash />
+//       </button>
+//     </li>
+//   );
+// }
