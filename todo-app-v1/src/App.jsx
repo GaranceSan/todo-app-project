@@ -73,26 +73,28 @@ function App() {
   //JSX
   return (
     <>
-      <div>
-        <h1>TO DO LIST APP</h1>
+      <div class="app-wrapper">
+        <div>
+          <h1>TO DO LIST APP</h1>
+        </div>
+        <Form handleSubmit={addTodo} />
+        <ul>
+          {todos.length
+            ? todos
+                .sort((a, b) => b.created - a.created)
+                .map((todo) => {
+                  return (
+                    <TodoItem
+                      key={todo.id}
+                      todoItem={todo}
+                      toggleFn={toggleTodo}
+                      deleteFn={deleteTodo}
+                    />
+                  );
+                })
+            : null}
+        </ul>
       </div>
-      <Form handleSubmit={addTodo} />
-      <ul>
-        {todos.length
-          ? todos
-              .sort((a, b) => b.created - a.created)
-              .map((todo) => {
-                return (
-                  <TodoItem
-                    key={todo.id}
-                    todoItem={todo}
-                    toggleFn={toggleTodo}
-                    deleteFn={deleteTodo}
-                  />
-                );
-              })
-          : null}
-      </ul>
     </>
   );
 }
