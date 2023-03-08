@@ -9,7 +9,9 @@ function TodoItem({ todoItem, toggleFn, deleteFn }) {
       <button onClick={() => toggleFn(todoItem.id)}>
         {todoItem.done ? "done" : "X"}
       </button>
-      <span>{date.toDateString()}</span>
+      <span>
+        {date.toDateString() + "," + date.getHours() + ":" + date.getMinutes()}
+      </span>
       {todoItem.task}
 
       <button onClick={() => deleteFn(todoItem.id)}>
