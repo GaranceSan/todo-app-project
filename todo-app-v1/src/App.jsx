@@ -79,16 +79,18 @@ function App() {
       <Form handleSubmit={addTodo} />
       <ul>
         {todos.length
-          ? todos.map((todo) => {
-              return (
-                <TodoItem
-                  key={todo.id}
-                  todoItem={todo}
-                  toggleFn={toggleTodo}
-                  deleteFn={deleteTodo}
-                />
-              );
-            })
+          ? todos
+              .sort((a, b) => b.created - a.created)
+              .map((todo) => {
+                return (
+                  <TodoItem
+                    key={todo.id}
+                    todoItem={todo}
+                    toggleFn={toggleTodo}
+                    deleteFn={deleteTodo}
+                  />
+                );
+              })
           : null}
       </ul>
     </>
