@@ -58,6 +58,7 @@ function App() {
 
   function addTodo(e) {
     e.preventDefault();
+
     const data = new FormData(e.target);
     const newTodo = {
       id: todos.length + 1,
@@ -68,6 +69,27 @@ function App() {
     const addTodos = [...todos, newTodo];
     setTodos(addTodos);
     e.target.task.value = "";
+  }
+
+  function modifyTodo(e, setEditing) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const updatedtask = data.get("task");
+    const id = data.get("todo_id");
+    const newTodos = todos.map((todo) => {
+      if (todo.id === Number(id)) {
+        const changedTodo = {
+          id: todo.id,
+          task: updatedtask,
+          done: todo.done,
+          created: todo.created,
+        };
+        return changedTodo;
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+    setEditing(false);
   }
 
   //JSX
@@ -89,6 +111,7 @@ function App() {
                       todoItem={todo}
                       toggleFn={toggleTodo}
                       deleteFn={deleteTodo}
+                      editFn={modifyTodo}
                     />
                   );
                 })
