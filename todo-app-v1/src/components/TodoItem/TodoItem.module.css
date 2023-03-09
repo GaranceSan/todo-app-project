@@ -1,0 +1,19 @@
+.listItem {
+  display: flex;
+  justify-content: space-between;
+}
+.doneBox {
+  width: 15%;
+}
+
+.dateBox {
+  width: 30%;
+  font-size: small;
+}
+.todoBox {
+  width: 50%;
+  text-align: left;
+}
+.deleteBox {
+  width: 15%;
+}
