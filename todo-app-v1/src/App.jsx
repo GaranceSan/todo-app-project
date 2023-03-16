@@ -6,6 +6,9 @@ import { TodoItem } from "./components/TodoItem";
 
 function App() {
   const [todos, setTodos] = React.useState([]);
+  const [taskErrors, setTaskErrors] = React.useState({
+    task: [],
+  });
 
   React.useEffect(() => {
     async function getTodos() {
@@ -56,20 +59,42 @@ function App() {
     setTodos(deletedTodos);
   }
 
+  function handleTaskFocus() {
+    setTaskErrors({ task: [] });
+  }
+
   function addTodo(e) {
     e.preventDefault();
+    const form = e.target;
+    const inputs = form.elements; // HTMLFormControlsCollection
+    const taskInput = inputs[0];
+    console.log(taskInput.validity); //check ValidityState
+    console.log(taskInput.validity.valid); //check ValidityState.valid
 
-    const data = new FormData(e.target);
-    const newTodo = {
-      id: todos.length + 1,
-      task: data.get("task"),
-      done: false,
-      created: Date.now(),
-    };
-    const addTodos = [...todos, newTodo];
-    setTodos(addTodos);
-    e.target.task.value = "";
-  }
+    const data = new FormData(form);
+    const task = data.get("task");
+    if (taskInput.validity.valid) {
+      const newTodo = {
+        id: todos.length + 1,
+        task,
+        done: false,
+        created: Date.now(),
+      };
+      const addTodos = [...todos, newTodo];
+      setTodos(addTodos);
+      e.target.task.value = "";
+    } else {
+      //has errors
+      //check what kind of validity error on Validity State
+      if (taskInput.validity.valueMissing) {
+        console.log("here");
+        const newTaskErrors = {
+          task: ["Please fill in a task"],
+        };
+        setTaskErrors(newTaskErrors);
+      }
+    }
+  } // addTodo
 
   function modifyTodo(e, setEditing) {
     e.preventDefault();
@@ -99,7 +124,11 @@ function App() {
         <div>
           <h1>TO DO LIST APP</h1>
         </div>
-        <Form handleSubmit={addTodo} />
+        <Form
+          handleSubmit={addTodo}
+          formErrors={taskErrors}
+          taskFocus={handleTaskFocus}
+        />
         <ul>
           {todos.length
             ? todos
