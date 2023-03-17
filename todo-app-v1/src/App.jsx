@@ -4,38 +4,54 @@ import React from "react";
 import { Form } from "./components/Form";
 import { TodoItem } from "./components/TodoItem";
 
+const KEY = "__todos__";
+
+function getTodos() {
+  const savedTodos = localStorage.getItem(KEY);
+  console.log("todos", savedTodos);
+  return savedTodos ? JSON.parse(savedTodos) : [];
+}
+
 function App() {
-  const [todos, setTodos] = React.useState([]);
+  const [todos, setTodos] = React.useState(getTodos);
   const [taskErrors, setTaskErrors] = React.useState({
     task: [],
   });
 
+  // React.useEffect(() => {
+  //   async function getTodos() {
+  //     const todosData = await Promise.resolve([
+  //       {
+  //         id: 1,
+  //         task: "acheter du pain",
+  //         done: true,
+  //         created: Date.now(),
+  //       },
+  //       {
+  //         id: 2,
+  //         task: "faire de la soupe",
+  //         done: false,
+  //         created: Date.now(),
+  //       },
+  //       {
+  //         id: 3,
+  //         task: " couper les arbres",
+  //         done: false,
+  //         created: Date.now(),
+  //       },
+  //     ]);
+  //     setTodos(todosData);
+  //   }
+  //   getTodos();
+  // }, []);
+
   React.useEffect(() => {
-    async function getTodos() {
-      const todosData = await Promise.resolve([
-        {
-          id: 1,
-          task: "acheter du pain",
-          done: true,
-          created: Date.now(),
-        },
-        {
-          id: 2,
-          task: "faire de la soupe",
-          done: false,
-          created: Date.now(),
-        },
-        {
-          id: 3,
-          task: " couper les arbres",
-          done: false,
-          created: Date.now(),
-        },
-      ]);
-      setTodos(todosData);
-    }
-    getTodos();
-  }, []);
+    localStorage.setItem(KEY, JSON.stringify(todos));
+  }, [todos]);
+
+  console.log(todos);
+
+  // }, []);
 
   //functions:
   function toggleTodo(id) {
