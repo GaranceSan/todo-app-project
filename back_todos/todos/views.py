@@ -1,17 +1,18 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from todos.models import Todos
 from todos.serializers import TodosSerializers
+from django.http import Http404
 
 
-@api_view(["GET","POST"])
-def todos_list(request):
-    if request.method == "GET":
+class TodosList(APIView):
+    def get (self, request, format=None):
         todo = Todos.objects.all()
         serializer = TodosSerializers(todo, many=True) 
         return Response(serializer.data)
-    elif request.method == "POST":
+    
+    def post(self, request, format=None):
         serializer = TodosSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -20,25 +21,28 @@ def todos_list(request):
     
 
 
-@api_view(["GET","PUT","DELETE"])
-def todos_detail(request,pk):
-    try:
-        todo = Todos.objects.get(pk=pk)
-    except Todos.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+class Todos_detail(APIView):
+    def get_object(self,pk):
+        try:
+            return Todos.objects.get(pk=pk)
+        except Todos.DoesNotExist:
+            raise Http404
     
-    if request.method == "GET":
+    def get(self, request, pk, format=None):
+        todo = self.get_object(pk)
         serializer = TodosSerializers(todo)
         return Response(serializer.data)
     
-    elif request.method == 'PUT':
+    def put(self, request, pk, format=None):
+        todo = self.get_object(pk)
         serializer = TodosSerializers(todo, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     
-    elif request.method == "DELETE":
+    def delete(self,request, pk, format=None):
+        todo = self.get_object(pk)
         todo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
