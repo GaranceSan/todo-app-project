@@ -41,20 +41,34 @@ function App() {
   // }, []);
 
   //functions:
-  function toggleTodo(id) {
-    const newTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        const changedTodo = {
-          id: todo.id,
-          task: todo.task,
-          done: !todo.done, // change is happening here
-          created: todo.created,
-        };
-        // fetch wiyh put
-        return changedTodo;
-      }
-      return todo;
-    });
+  async function toggleTodo(id) {
+    const newTodos = await Promise.all(
+      todos.map(async (todo) => {
+        if (todo.id === id) {
+          try {
+            console.log("here");
+            const response = await fetch(`http://127.0.0.1:8000/todos/${id}/`, {
+              method: "PUT",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                task: todo.task,
+                done: !todo.done, // change is happening here })
+              }),
+            });
+            console.log(response);
+            const changedTodo = await response.json();
+            console.log(changedTodo);
+            return changedTodo;
+          } catch (error) {}
+        } else {
+          return todo;
+        }
+      })
+    );
+    console.log(newTodos);
     setTodos(newTodos);
   } //end of toggleTodo
 
@@ -75,7 +89,9 @@ function App() {
     console.log(taskInput.validity.valid); //check ValidityState.valid
 
     const data = new FormData(form);
+    console.log("data", data);
     const task = data.get("task");
+    console.log("task", task);
     if (taskInput.validity.valid) {
       // create fetch request to backend (POST) with {"task": task}
       // get response
@@ -98,7 +114,6 @@ function App() {
       //has errors
       //check what kind of validity error on Validity State
       if (taskInput.validity.valueMissing) {
-        console.log("here");
         const newTaskErrors = {
           task: ["Please fill in a task"],
         };
