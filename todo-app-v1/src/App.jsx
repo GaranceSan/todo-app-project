@@ -6,50 +6,37 @@ import { TodoItem } from "./components/TodoItem";
 
 const KEY = "__todos__";
 
-function getTodos() {
-  const savedTodos = localStorage.getItem(KEY);
-  console.log("todos", savedTodos);
-  return savedTodos ? JSON.parse(savedTodos) : [];
-}
+// function getTodos() {
+//   const savedTodos = localStorage.getItem(KEY);
+//   console.log("todos", savedTodos);
+//   return savedTodos ? JSON.parse(savedTodos) : [];
+// }
 
 function App() {
-  const [todos, setTodos] = React.useState(getTodos);
+  const [todos, setTodos] = React.useState([]);
   const [taskErrors, setTaskErrors] = React.useState({
     task: [],
   });
 
-  // React.useEffect(() => {
-  //   async function getTodos() {
-  //     const todosData = await Promise.resolve([
-  //       {
-  //         id: 1,
-  //         task: "acheter du pain",
-  //         done: true,
-  //         created: Date.now(),
-  //       },
-  //       {
-  //         id: 2,
-  //         task: "faire de la soupe",
-  //         done: false,
-  //         created: Date.now(),
-  //       },
-  //       {
-  //         id: 3,
-  //         task: " couper les arbres",
-  //         done: false,
-  //         created: Date.now(),
-  //       },
-  //     ]);
-  //     setTodos(todosData);
-  //   }
-  //   getTodos();
-  // }, []);
-
   React.useEffect(() => {
-    localStorage.setItem(KEY, JSON.stringify(todos));
-  }, [todos]);
+    async function getTodos() {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/todos/");
+        const data = await response.json();
+        //not dealing with error yet to that point
+        setTodos(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getTodos();
+  }, []);
 
-  console.log(todos);
+  // React.useEffect(() => {
+  //   localStorage.setItem(KEY, JSON.stringify(todos));
+  // }, [todos]);
+
+  // console.log(todos);
 
   // }, []);
 
@@ -63,6 +50,7 @@ function App() {
           done: !todo.done, // change is happening here
           created: todo.created,
         };
+        // fetch wiyh put
         return changedTodo;
       }
       return todo;
@@ -74,12 +62,11 @@ function App() {
     const deletedTodos = todos.filter((todo) => todo.id !== id);
     setTodos(deletedTodos);
   }
-
   function handleTaskFocus() {
     setTaskErrors({ task: [] });
   }
 
-  function addTodo(e) {
+  async function addTodo(e) {
     e.preventDefault();
     const form = e.target;
     const inputs = form.elements; // HTMLFormControlsCollection
@@ -90,15 +77,23 @@ function App() {
     const data = new FormData(form);
     const task = data.get("task");
     if (taskInput.validity.valid) {
-      const newTodo = {
-        id: todos.length + 1,
-        task,
-        done: false,
-        created: Date.now(),
-      };
-      const addTodos = [...todos, newTodo];
-      setTodos(addTodos);
-      e.target.task.value = "";
+      // create fetch request to backend (POST) with {"task": task}
+      // get response
+      // get response.json() and asign to newTodo
+      try {
+        const response = await fetch("http://127.0.0.1:8000/todos/", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ task: task }),
+        });
+        const newTodo = await response.json();
+        const addTodos = [...todos, newTodo];
+        setTodos(addTodos);
+        e.target.task.value = "";
+      } catch (error) {}
     } else {
       //has errors
       //check what kind of validity error on Validity State
