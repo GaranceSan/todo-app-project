@@ -8,8 +8,8 @@ from django.http import Http404
 
 class TodosList(APIView):
     def get (self, request, format=None):
-        todo = Todos.objects.all()
-        serializer = TodosSerializers(todo, many=True) 
+        todos = Todos.objects.all()
+        serializer = TodosSerializers(todos, many=True) 
         return Response(serializer.data)
     
     def post(self, request, format=None):

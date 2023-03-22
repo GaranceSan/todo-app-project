@@ -46,7 +46,6 @@ function App() {
       todos.map(async (todo) => {
         if (todo.id === id) {
           try {
-            console.log("here");
             const response = await fetch(`http://127.0.0.1:8000/todos/${id}/`, {
               method: "PUT",
               headers: {
@@ -58,9 +57,7 @@ function App() {
                 done: !todo.done, // change is happening here })
               }),
             });
-            console.log(response);
             const changedTodo = await response.json();
-            console.log(changedTodo);
             return changedTodo;
           } catch (error) {}
         } else {
@@ -72,10 +69,23 @@ function App() {
     setTodos(newTodos);
   } //end of toggleTodo
 
-  function deleteTodo(id) {
-    const deletedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(deletedTodos);
+  async function deleteTodo(id) {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/todos/${id}/`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) return;
+      const savedTodos = todos.filter((todo) => todo.id !== id);
+      setTodos(savedTodos);
+    } catch (error) {
+      console.error(error);
+    }
   }
+
   function handleTaskFocus() {
     setTaskErrors({ task: [] });
   }
