@@ -5,6 +5,7 @@ import { Form } from "./components/Form";
 import { TodoItem } from "./components/TodoItem";
 
 const KEY = "__todos__";
+const BASE_URL = "http://127.0.0.1:8000/todos/";
 
 // function getTodos() {
 //   const savedTodos = localStorage.getItem(KEY);
@@ -99,15 +100,13 @@ function App() {
     console.log(taskInput.validity.valid); //check ValidityState.valid
 
     const data = new FormData(form);
-    console.log("data", data);
     const task = data.get("task");
-    console.log("task", task);
     if (taskInput.validity.valid) {
       // create fetch request to backend (POST) with {"task": task}
       // get response
       // get response.json() and asign to newTodo
       try {
-        const response = await fetch("http://127.0.0.1:8000/todos/", {
+        const response = await fetch(BASE_URL, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -132,23 +131,42 @@ function App() {
     }
   } // addTodo
 
-  function modifyTodo(e, setEditing) {
+  async function modifyTodo(e, setEditing) {
     e.preventDefault();
     const data = new FormData(e.target);
+    console.log("data", data);
     const updatedtask = data.get("task");
+    console.log("updated", updatedtask);
     const id = data.get("todo_id");
-    const newTodos = todos.map((todo) => {
-      if (todo.id === Number(id)) {
-        const changedTodo = {
-          id: todo.id,
-          task: updatedtask,
-          done: todo.done,
-          created: todo.created,
-        };
-        return changedTodo;
-      }
-      return todo;
-    });
+    console.log("id", id);
+    const newTodos = await Promise.all(
+      todos.map(async (todo) => {
+        if (todo.id === Number(id)) {
+          try {
+            const response = await fetch(`${BASE_URL}${id}/`, {
+              method: "PUT",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                task: updatedtask,
+                id: id,
+              }),
+            });
+            if (!response.ok) return todo;
+            const changedTodo = await response.json();
+            return changedTodo;
+          } catch (error) {
+            console.error(error);
+            return todo;
+          }
+        } else {
+          return todo;
+        }
+      })
+    );
+
     setTodos(newTodos);
     setEditing(false);
   }
