@@ -1,8 +1,12 @@
 /* global styles*/
-.app-wrapper {
-  border: 1px solid;
+
+h1 {
+  font-family: "Cabin Sketch";
+  /* color: orangered; */
 }
 ul {
+  font-family: "Montez";
+  font-size: 30px;
   list-style-type: none;
   padding: 0;
 }

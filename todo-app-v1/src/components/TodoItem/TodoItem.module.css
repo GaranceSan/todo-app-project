@@ -3,17 +3,60 @@
   justify-content: space-between;
 }
 .doneBox {
-  width: 15%;
+  width: 5%;
+  display: flex;
+  justify-content: center;
 }
+.doneButton {
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  border: none;
+  /* color: orangered; */
+}
+.doneButton:hover {
+  cursor: pointer;
+}
+/* .done {
+  color: green;
+}
+.notDone {
+  color: red;
+} */
 
 .dateBox {
-  width: 30%;
-  font-size: small;
+  width: 25%;
+  font-size: 20px;
 }
 .todoBox {
-  width: 50%;
+  width: 70%;
   text-align: left;
 }
+.edit {
+  display: flex;
+  justify-content: space-between;
+}
+.editButton {
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  border: none;
+}
+.editButton:hover {
+  cursor: pointer;
+}
 .deleteBox {
-  width: 15%;
+  width: 5%;
+  display: flex;
+  justify-content: center;
+}
+
+.deleteButton {
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  border: none;
+}
+.deleteButton:hover {
+  cursor: pointer;
 }

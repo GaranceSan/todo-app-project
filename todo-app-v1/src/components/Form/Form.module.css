@@ -1,1 +1,7 @@
- 
+.form {
+  display: flex;
+  justify-content: center;
+}
+.inputBox {
+  padding-right: 10px;
+}
