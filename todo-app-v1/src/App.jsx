@@ -172,6 +172,7 @@ function App() {
   }
 
   //JSX
+  console.log(todos);
   return (
     <>
       <div class="app-wrapper">
@@ -183,10 +184,14 @@ function App() {
           formErrors={taskErrors}
           taskFocus={handleTaskFocus}
         />
-        <ul>
+        <ul class="list-wrapper">
           {todos.length
             ? todos
-                .sort((a, b) => b.created - a.created)
+                .sort((a, b) => {
+                  return (
+                    a.done - b.done || new Date(b.created) - new Date(a.created)
+                  );
+                })
                 .map((todo) => {
                   return (
                     <TodoItem

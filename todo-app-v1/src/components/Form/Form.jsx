@@ -6,8 +6,8 @@ import styles from "./Form.module.css";
 function Form({ handleSubmit, formErrors, taskFocus }) {
   console.log("formErrors in Form", formErrors);
   return (
-    <form onSubmit={handleSubmit} noValidate>
-      <div>
+    <form onSubmit={handleSubmit} noValidate className={styles.form}>
+      <div className={styles.inputBox}>
         <label htmlFor="task"> Il faut : </label>
         <input
           id="task"
