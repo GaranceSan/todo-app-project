@@ -27,7 +27,7 @@ export default function Contact() {
           <Favorite contact={contact} />
         </h1>
 
-        {contact.twitter && (
+        {contact?.twitter && (
           <p>
             <a target="_blank" href={`https://twitter.com/${contact.twitter}`}>
               {contact.twitter}
@@ -35,7 +35,7 @@ export default function Contact() {
           </p>
         )}
 
-        {contact.notes && <p>{contact.notes}</p>}
+        {contact.notes ? <p>{contact.notes}</p> : null}
 
         <div>
           <Form action="edit">
