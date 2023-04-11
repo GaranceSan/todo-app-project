@@ -1,4 +1,12 @@
-import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
+import {
+  Outlet,
+  Link,
+  useLoaderData,
+  Form,
+  redirect,
+  NavLink,
+  useNavigation,
+} from "react-router-dom";
 import { getContacts, createContact } from "../contacts";
 
 export async function action() {
@@ -13,6 +21,7 @@ export async function loader() {
 
 export default function Root() {
   const { contacts } = useLoaderData();
+  const navigation = useNavigation();
 
   return (
     <>
@@ -37,21 +46,30 @@ export default function Root() {
         <nav>
           {contacts.length ? (
             <ul>
-              {contacts.map((contact) => (
-                <li key={contacts.id}>
-                  <Link to={`/contacts/${contact.id}`}>
-                    {contact.first || contact.last ? (
-                      <>
-                        {contact.first} {contact.last}
-                      </>
-                    ) : (
-                      <i>No name</i>
-                    )}
-                    {""}
-                    {contact.favorite && <span>★</span>}
-                  </Link>
-                </li>
-              ))}
+              {contacts.map((contact) => {
+                return (
+                  <li key={contacts.id}>
+                    <NavLink
+                      to={`contacts/${contact.id}`}
+                      className={({ isActive, isPending }) =>
+                        isActive ? "active" : isPending ? "pending" : ""
+                      }
+                    >
+                      <Link to={`/contacts/${contact.id}`}>
+                        {contact.first || contact.last ? (
+                          <>
+                            {contact.first} {contact.last}
+                          </>
+                        ) : (
+                          <i>No name</i>
+                        )}
+                        {""}
+                        {contact.favorite && <span>★</span>}
+                      </Link>
+                    </NavLink>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <p>
@@ -60,7 +78,10 @@ export default function Root() {
           )}
         </nav>
       </div>
-      <div id="detail">
+      <div
+        id="detail"
+        className={navigation.state === "loading" ? "loading" : ""}
+      >
         <Outlet />
       </div>
     </>
