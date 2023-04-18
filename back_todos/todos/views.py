@@ -1,23 +1,55 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from todos.models import Todos
-from todos.serializers import TodosSerializers
+from todos.models import Todos,Listes
+from todos.serializers import TodosSerializers,ListesSerializers
 from django.http import Http404
 
-
-class TodosList(APIView):
+class ListesView(APIView):
     def get (self, request, format=None):
-        todos = Todos.objects.all()
-        serializer = TodosSerializers(todos, many=True) 
+        listes = Listes.objects.all()
+        serializer = ListesSerializers(listes, many=True) 
         return Response(serializer.data)
     
     def post(self, request, format=None):
-        serializer = TodosSerializers(data=request.data)
+        serializer =ListesSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class Listes_detail(APIView):
+    def get_object(self,pk):
+        try:
+            return Listes.objects.get(pk=pk)
+        except Listes.DoesNotExist:
+            raise Http404
+    
+    def get(self, request, pk, format=None):
+        liste = self.get_object(pk)
+        serializer = ListesSerializers(liste)
+        return Response(serializer.data)
+    
+    def put(self, request, pk, format=None):
+        liste = self.get_object(pk)
+        serializer = ListesSerializers(liste, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+# class TodosCreate(APIView):
+#     def get (self, request, format=None):
+#         todos = Todos.objects.all()
+#         serializer = TodosSerializers(todos, many=True) 
+#         return Response(serializer.data)
+    
+#     def post(self, request, format=None):
+#         serializer =TodosSerializers(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status = status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 
