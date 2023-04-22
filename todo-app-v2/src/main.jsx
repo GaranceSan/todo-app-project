@@ -1,19 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import { Root, loader as rootLoader } from "./routes/root";
 import "./index.css";
-import Root from "./routes/root";
-import List from "./routes/list";
+import { List, loader as listLoader } from "./routes/list";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    loader: rootLoader,
     children: [
       {
-        path: "list/:listId",
+        path: "lists/:listId",
         element: <List />,
+        loader: listLoader,
       },
     ],
   },

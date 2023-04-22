@@ -77,6 +77,7 @@ WSGI_APPLICATION = "main_app.wsgi.application"
 #cors headers configuration
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:5173",
 ]
 
 
