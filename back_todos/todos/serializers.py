@@ -1,6 +1,14 @@
 from rest_framework import serializers
 from todos.models import Todos,Listes
 
+
+
+class ListeNewSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model = Listes
+        fields = ["id", "created", "list_name"]
+        
+
 class TodosSerializers(serializers.ModelSerializer):
     class Meta:
         model = Todos
