@@ -75,6 +75,7 @@ export function Root() {
           <input name="new-list-name" type="text" id="id-new-list-name" />
           <button type="submit">Create New List</button>
         </Form>
+        <div></div>
         <nav>
           {lists.length ? (
             <ul>

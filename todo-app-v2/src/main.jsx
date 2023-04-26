@@ -7,7 +7,11 @@ import {
   action as rootAction,
 } from "./routes/root";
 import "./index.css";
-import { List, loader as listLoader } from "./routes/list";
+import {
+  List,
+  loader as listLoader,
+  action as listAction,
+} from "./routes/list";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +24,7 @@ const router = createBrowserRouter([
         path: "lists/:listId",
         element: <List />,
         loader: listLoader,
+        action: listAction,
       },
     ],
   },
