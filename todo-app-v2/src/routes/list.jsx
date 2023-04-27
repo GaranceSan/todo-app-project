@@ -3,12 +3,12 @@ import { useLoaderData, Form } from "react-router-dom";
 
 export async function action({ request, params }) {
   const formData = await request.formData();
-  const newTodoName = formData.get("new-todo-name");
   const listId = Number(params.listId);
-  console.log(newTodoName);
+  const newTodoName = formData.get("new-todo-name");
   const url = `${BACKEND_URL}/todos/item/new/`;
   const requestOptions = {
     method: "POST",
+
     headers: {
       "content-Type": "application/json",
     },
@@ -59,7 +59,7 @@ export async function loader({ params }) {
 
 export function List() {
   const { data: list, errors } = useLoaderData();
-  console.log(list);
+  const listId = list.id;
   return (
     <div>
       <h1>{list.list_name}</h1>
@@ -76,9 +76,13 @@ export function List() {
               {todo.done ? <span>0 </span> : <span>X</span>}
               <span>{todo.created}</span>
               <span>{todo.task}</span>
+
+              <Form action="edit">
+                <button type="submit">Edit</button>
+              </Form>
               <Form
                 method="post"
-                action="destroy"
+                action={`/todo/${listId}/${todo.id}/destroy/`}
                 onSubmit={(event) => {
                   if (
                     !confirm("Please confirm you want to delete this record.")

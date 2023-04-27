@@ -12,6 +12,9 @@ import {
   loader as listLoader,
   action as listAction,
 } from "./routes/list";
+import EditTodo, { action as editAction } from "./routes/edit";
+import { action as destroyAction } from "./routes/destroy";
+import { action as destroyTodoAction } from "./routes/destroyTodo";
 
 const router = createBrowserRouter([
   {
@@ -21,10 +24,25 @@ const router = createBrowserRouter([
     action: rootAction,
     children: [
       {
+        path: "/todo/:listId/:todoId/destroy/",
+        action: destroyTodoAction,
+      },
+      {
         path: "lists/:listId",
         element: <List />,
         loader: listLoader,
         action: listAction,
+      },
+      {
+        path: "lists/:listId/edit",
+        element: <EditTodo />,
+        loader: listLoader,
+        action: editAction,
+      },
+      {
+        path: "lists/:listId/:todoId/destroy/",
+
+        action: destroyAction,
       },
     ],
   },
