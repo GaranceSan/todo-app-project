@@ -53,7 +53,7 @@ export async function loader() {
 
     //get data from res
     const data = await res.json();
-    console.log(data);
+
     loaderResponse.data = data;
     return loaderResponse;
   } catch (err) {
@@ -65,7 +65,6 @@ export async function loader() {
 
 export function Root() {
   const { data: lists, errors } = useLoaderData();
-  console.log(lists, errors);
   return (
     <>
       <aside id="sidebar">
