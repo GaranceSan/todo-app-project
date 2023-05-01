@@ -32,12 +32,12 @@ const router = createBrowserRouter([
         loader: listLoader,
         action: listAction,
       },
-      {
-        path: "lists/:listId/edit",
-        element: <EditTodo />,
-        loader: listLoader,
-        action: editAction,
-      },
+      // {
+      //   path: "lists/:listId/edit",
+      //   element: <EditTodo />,
+      //   loader: listLoader,
+      //   action: editAction,
+      // },
     ],
   },
 ]);

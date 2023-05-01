@@ -1,4 +1,5 @@
 import { BACKEND_URL } from "../common/constants";
+import React from "react";
 import { useLoaderData, Form } from "react-router-dom";
 
 export async function action({ request, params }) {
@@ -43,13 +44,14 @@ export async function action({ request, params }) {
       method: "DELETE",
       headers: {
         "content-Type": "application/json",
+        body: JSON.stringify({ task: newTodoName.trim(), liste: listId }),
       },
     };
     try {
       const res = await fetch(backendUrl, requestOptions);
       if (!res.ok) {
         actionResponse.errors = ["Unable to delete"];
-        return actionResponse;
+        return actionResponse.data;
       }
       actionResponse.data = ["Deleted"];
       return actionResponse;
@@ -59,9 +61,35 @@ export async function action({ request, params }) {
       return actionResponse;
     }
   } else if (submissionType === "update") {
-    // update code here
-  } else {
-    console.error("SHould not be here, there is an error in list page");
+    const todoId = formData.get("todo-id");
+    console.log("todoId", todoId);
+    const newTodoContent = formData.get("new-todo-content");
+    console.log("content", newTodoContent);
+    const backendUrl = `${BACKEND_URL}/todos/items/${todoId}/`;
+    console.log(backendUrl);
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "content-Type": "application/json",
+      },
+      body: JSON.stringify({ task: newTodoContent.trim(), liste: listId }),
+    };
+    try {
+      const res = await fetch(backendUrl, requestOptions);
+      console.log(res);
+      if (!res.ok) {
+        actionResponse.errors = ["Unable to change the todo"];
+        return actionResponse;
+      }
+      const data2 = await res.json();
+      actionResponse.data = data2;
+      return actionResponse;
+    } catch {
+      console.error(err);
+      actionResponse.errors = ["Unable to change the todo"];
+      return actionResponse;
+      // console.error("SHould not be here, there is an error in list page");
+    }
   }
 }
 // end action
@@ -103,23 +131,46 @@ export function List() {
       {list.todos.length ? (
         <ul>
           {list.todos.map((todo) => (
-            <li key={todo.id}>
-              {todo.done ? <span>0 </span> : <span>X</span>}
-              <span>{todo.created}</span>
-              <span>{todo.task}</span>
-
-              <Form method="post" action="edit">
-                <button type="submit">Edit</button>
-              </Form>
-              <Form method="post">
-                <input type="hidden" name="todo-type" value="delete" />
-                <input type="hidden" name="todo-id" value={todo.id} />
-                <button type="submit">Delete</button>
-              </Form>
-            </li>
+            <TodoItem key={todo.id} todo={todo} />
           ))}
         </ul>
       ) : null}
     </div>
+  );
+}
+
+function TodoItem({ todo }) {
+  const [showEdit, setShowEdit] = React.useState(false);
+  return (
+    <li key={todo.id}>
+      {todo.done ? <span>0 </span> : <span>X</span>}
+      <span>{todo.created}</span>
+      <span>{todo.task}</span>
+      <button onClick={() => setShowEdit(true)}>Edit</button>
+      {showEdit ? (
+        <Form
+          method="post"
+          onSubmit={(event) => {
+            setShowEdit(false);
+          }}
+        >
+          <input type="hidden" name="todo-type" value="update" />
+          <input type="hidden" name="todo-id" value={todo.id} />
+          <input
+            name="new-todo-content"
+            type="text"
+            id="id-new-tod"
+            defaultValue={todo.task}
+          />
+          <button type="submit">Submit Edit</button>
+        </Form>
+      ) : null}
+
+      <Form method="post">
+        <input type="hidden" name="todo-type" value="delete" />
+        <input type="hidden" name="todo-id" value={todo.id} />
+        <button type="submit">Delete</button>
+      </Form>
+    </li>
   );
 }
