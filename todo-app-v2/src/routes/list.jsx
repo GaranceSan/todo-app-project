@@ -88,8 +88,41 @@ export async function action({ request, params }) {
       console.error(err);
       actionResponse.errors = ["Unable to change the todo"];
       return actionResponse;
-      // console.error("SHould not be here, there is an error in list page");
     }
+  } else if (submissionType === "toggle-done") {
+    const todoId = formData.get("todo-id");
+    const todoContent = formData.get("todo-content");
+    const todoDone = formData.get("todo-done") === "true" ? true : false;
+    const backendUrl = `${BACKEND_URL}/todos/items/${todoId}/`;
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        task: todoContent,
+        done: !todoDone,
+        liste: listId,
+      }),
+    };
+    try {
+      const res = await fetch(backendUrl, requestOptions);
+      console.log(res);
+      if (!res.ok) {
+        actionResponse.errors = ["Unable to toggle the todo"];
+        return actionResponse;
+      }
+      const data = await res.json();
+      actionResponse.data = data;
+      return actionResponse;
+    } catch {
+      console.error(err);
+      actionResponse.errors = ["Unable to toggle the todo"];
+      return actionResponse;
+    }
+  } else {
+    console.error("SHould not be here, there is an error in list page");
+    return null;
   }
 }
 // end action
@@ -143,7 +176,15 @@ function TodoItem({ todo }) {
   const [showEdit, setShowEdit] = React.useState(false);
   return (
     <li key={todo.id}>
-      {todo.done ? <span>0 </span> : <span>X</span>}
+      <Form method="post">
+        <input type="hidden" name="todo-type" value="toggle-done" />
+        <input type="hidden" name="todo-id" value={todo.id} />
+        <input type="hidden" name="todo-done" value={todo.done} />
+        <input type="hidden" name="todo-content" value={todo.task} />
+        <button type="submit">{todo.done ? "0" : "X"}</button>
+      </Form>
+
+      {todo.done ? <span>X </span> : <span>0</span>}
       <span>{todo.created}</span>
       <span>{todo.task}</span>
       <button onClick={() => setShowEdit(true)}>Edit</button>
