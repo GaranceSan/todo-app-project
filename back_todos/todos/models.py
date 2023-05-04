@@ -1,7 +1,7 @@
 from django.db import models
 
 class Listes(models.Model):
-    list_name = models.CharField(max_length=100, blank=True)
+    list_name = models.CharField(max_length=100, blank=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:

@@ -1,8 +1,9 @@
 import { BACKEND_URL } from "../common/constants";
 import React from "react";
-import { useLoaderData, Form } from "react-router-dom";
+import { useLoaderData, Form, useSubmit } from "react-router-dom";
 
 export async function action({ request, params }) {
+  console.log(request.method);
   const formData = await request.formData();
   const submissionType = formData.get("todo-type");
   const listId = Number(params.listId);
@@ -44,7 +45,6 @@ export async function action({ request, params }) {
       method: "DELETE",
       headers: {
         "content-Type": "application/json",
-        body: JSON.stringify({ task: newTodoName.trim(), liste: listId }),
       },
     };
     try {
@@ -62,11 +62,8 @@ export async function action({ request, params }) {
     }
   } else if (submissionType === "update") {
     const todoId = formData.get("todo-id");
-    console.log("todoId", todoId);
     const newTodoContent = formData.get("new-todo-content");
-    console.log("content", newTodoContent);
     const backendUrl = `${BACKEND_URL}/todos/items/${todoId}/`;
-    console.log(backendUrl);
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -121,7 +118,7 @@ export async function action({ request, params }) {
       return actionResponse;
     }
   } else {
-    console.error("SHould not be here, there is an error in list page");
+    console.error("Should not be here, there is an error in list page");
     return null;
   }
 }
@@ -149,15 +146,24 @@ export async function loader({ params }) {
 
 export function List() {
   const { data: list, errors } = useLoaderData();
-
+  const submit = useSubmit();
   const listId = list.id;
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    submit(formData, { method: "post" });
+    const input = document.getElementById("id-new-todo");
+    input.value = "";
+  }
+
   return (
     <div>
       <h1>{list.list_name}</h1>
-      <Form method="post">
+      <Form method="post" onSubmit={handleSubmit}>
         <input type="hidden" name="todo-type" value="new" />
         <label htmlFor="id-new-todo">New Todo</label>
-        <input name="new-todo-name" type="text" id="id-new-tod" />
+        <input name="new-todo-name" type="text" id="id-new-todo" />
         <button type="submit">Create New Todo</button>
       </Form>
 
@@ -174,6 +180,10 @@ export function List() {
 
 function TodoItem({ todo }) {
   const [showEdit, setShowEdit] = React.useState(false);
+  const [done, setDone] = React.useState(todo.done);
+  console.log(done, "done value");
+  console.log(todo.done, "todo back");
+
   return (
     <li key={todo.id}>
       <Form method="post">
@@ -181,7 +191,9 @@ function TodoItem({ todo }) {
         <input type="hidden" name="todo-id" value={todo.id} />
         <input type="hidden" name="todo-done" value={todo.done} />
         <input type="hidden" name="todo-content" value={todo.task} />
-        <button type="submit">{todo.done ? "0" : "X"}</button>
+        <button type="submit" onClick={() => setDone(!done)}>
+          {done ? "0" : "X"}
+        </button>
       </Form>
 
       {todo.done ? <span>X </span> : <span>0</span>}

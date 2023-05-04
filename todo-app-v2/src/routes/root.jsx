@@ -1,4 +1,11 @@
-import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
+import {
+  Outlet,
+  Link,
+  useLoaderData,
+  Form,
+  redirect,
+  useSubmit,
+} from "react-router-dom";
 import { BACKEND_URL } from "../common/constants";
 
 export async function action({ request }) {
@@ -12,6 +19,7 @@ export async function action({ request }) {
     },
     body: JSON.stringify({ list_name: newListName.trim() }),
   };
+
   const actionResponse = {
     data: null,
     errors: null,
@@ -65,11 +73,29 @@ export async function loader() {
 
 export function Root() {
   const { data: lists, errors } = useLoaderData();
+  const submit = useSubmit();
+
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   submit(formData, { method: "post" });
+  //   const input = document.getElementById("id-new-list-name");
+  //   input.value = "";
+  // }
   return (
     <>
       <aside id="sidebar">
         <h1>Lists are here</h1>
-        <Form method="post">
+        <Form
+          method="post"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            submit(formData, { method: "post" });
+            const newListInput = document.getElementById("id-new-list-name");
+            newListInput.value = "";
+          }}
+        >
           <label htmlFor="id-new-list-name">New List Name</label>
           <input name="new-list-name" type="text" id="id-new-list-name" />
           <button type="submit">Create New List</button>
