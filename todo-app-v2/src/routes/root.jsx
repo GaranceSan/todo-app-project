@@ -7,6 +7,7 @@ import {
   useSubmit,
 } from "react-router-dom";
 import { BACKEND_URL } from "../common/constants";
+import { AiOutlinePlus } from "react-icons/ai";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -98,12 +99,14 @@ export function Root() {
         >
           <label htmlFor="id-new-list-name">New List Name</label>
           <input name="new-list-name" type="text" id="id-new-list-name" />
-          <button type="submit">Create New List</button>
+          <button type="submit">
+            <AiOutlinePlus />
+          </button>
         </Form>
         <div></div>
         <nav>
           {lists.length ? (
-            <ul>
+            <ul id="listoflist">
               {lists.map((list) => (
                 <li key={list.id}>
                   <Link to={`lists/${list.id}`}>{list.list_name}</Link>

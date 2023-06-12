@@ -1,6 +1,12 @@
 import { BACKEND_URL } from "../common/constants";
 import React from "react";
 import { useLoaderData, Form, useSubmit } from "react-router-dom";
+import styles from "./list.module.css";
+import {
+  AiOutlinePlus,
+  AiOutlineBorder,
+  AiOutlineCheckSquare,
+} from "react-icons/ai";
 
 export async function action({ request, params }) {
   console.log(request.method);
@@ -159,16 +165,19 @@ export function List() {
 
   return (
     <div>
-      <h1>{list.list_name}</h1>
+      <h1 className={styles.h1}>{list.list_name}</h1>
       <Form method="post" onSubmit={handleSubmit}>
         <input type="hidden" name="todo-type" value="new" />
         <label htmlFor="id-new-todo">New Todo</label>
+
         <input name="new-todo-name" type="text" id="id-new-todo" />
-        <button type="submit">Create New Todo</button>
+        <button type="submit">
+          <AiOutlinePlus />
+        </button>
       </Form>
 
       {list.todos.length ? (
-        <ul>
+        <ul className={styles.ul}>
           {list.todos.map((todo) => (
             <TodoItem key={todo.id} todo={todo} />
           ))}
@@ -185,18 +194,18 @@ function TodoItem({ todo }) {
   console.log(todo.done, "todo back");
 
   return (
-    <li key={todo.id}>
+    <li key={todo.id} className={styles.li}>
       <Form method="post">
         <input type="hidden" name="todo-type" value="toggle-done" />
         <input type="hidden" name="todo-id" value={todo.id} />
         <input type="hidden" name="todo-done" value={todo.done} />
         <input type="hidden" name="todo-content" value={todo.task} />
         <button type="submit" onClick={() => setDone(!done)}>
-          {done ? "0" : "X"}
+          {done ? <AiOutlineCheckSquare /> : <AiOutlineBorder />}
         </button>
       </Form>
 
-      {todo.done ? <span>X </span> : <span>0</span>}
+      {/* {todo.done ? <span>X</span> : <span>0</span>} */}
       <span>{todo.created}</span>
       <span>{todo.task}</span>
       <button onClick={() => setShowEdit(true)}>Edit</button>

@@ -1,26 +1,37 @@
 @import url("https://fonts.googleapis.com/css2?family=Montez");
 @import url("https://fonts.googleapis.com/css2?family=Cabin+Sketch");
+html,
 body {
   padding: 0;
   margin: 0;
+  height: 100%;
+}
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f7f7f7;
 }
 #root {
-  display: flex;
+  display: grid;
+  grid-template-columns: 30% 70%;
   height: 100%;
-  width: 100%;
-  background-color: red;
 }
 
 #sidebar {
-  width: 22rem;
-  height: 100%;
-  border-right: solid 1px #e3e3e3;
-  display: flex;
-  flex-direction: column;
-  background-color: yellow;
+  padding-left: 10px;
+}
+
+#listoflist {
+  background-color: #f5c27d;
+  color: #8c4a4a;
+  border-radius: 10px;
+}
+
+#details {
+  padding-left: 10px;
 }
 
 /* #sidebar > * {
@@ -31,6 +42,23 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+/*
+* forms styles
+*/
+input {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: #bfe7f6;
+}
+
+button {
+  display: inline-block;
+  margin: 5px;
+  background-color: #ffe666;
+  text-align: center;
+  border-radius: 50px;
 }
 
 @media (max-width: 480px) {
