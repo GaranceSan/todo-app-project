@@ -2,8 +2,17 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from todos.models import Todos,Listes
-from todos.serializers import TodosSerializers,ListesSerializers
+from todos.serializers import TodosSerializers,ListesSerializers, ListeNewSerializer
 from django.http import Http404
+
+
+class ListeNewView(APIView):
+    def post(self, request, format=None):
+        serializer =ListeNewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ListesView(APIView):
     def get (self, request, format=None):
@@ -38,18 +47,20 @@ class Listes_detail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-# class TodosCreate(APIView):
-#     def get (self, request, format=None):
-#         todos = Todos.objects.all()
-#         serializer = TodosSerializers(todos, many=True) 
-#         return Response(serializer.data)
     
-#     def post(self, request, format=None):
-#         serializer =TodosSerializers(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status = status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TodosCreate(APIView):
+    # def get (self, request, format=None):
+    #     todos = Todos.objects.all()
+    #     serializer = TodosSerializers(todos, many=True) 
+    #     return Response(serializer.data)
+    
+    def post(self, request, format=None):
+        serializer =TodosSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 
