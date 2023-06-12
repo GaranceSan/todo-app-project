@@ -6,6 +6,8 @@ import {
   AiOutlinePlus,
   AiOutlineBorder,
   AiOutlineCheckSquare,
+  AiOutlineEdit,
+  AiOutlineDelete,
 } from "react-icons/ai";
 
 export async function action({ request, params }) {
@@ -208,7 +210,9 @@ function TodoItem({ todo }) {
       {/* {todo.done ? <span>X</span> : <span>0</span>} */}
       <span>{todo.created}</span>
       <span>{todo.task}</span>
-      <button onClick={() => setShowEdit(true)}>Edit</button>
+      <button onClick={() => setShowEdit(true)}>
+        <AiOutlineEdit />
+      </button>
       {showEdit ? (
         <Form
           method="post"
@@ -224,14 +228,19 @@ function TodoItem({ todo }) {
             id="id-new-tod"
             defaultValue={todo.task}
           />
-          <button type="submit">Submit Edit</button>
+          <button type="submit">
+            Submit
+            <AiOutlineEdit />
+          </button>
         </Form>
       ) : null}
 
       <Form method="post">
         <input type="hidden" name="todo-type" value="delete" />
         <input type="hidden" name="todo-id" value={todo.id} />
-        <button type="submit">Delete</button>
+        <button type="submit">
+          <AiOutlineDelete />
+        </button>
       </Form>
     </li>
   );
