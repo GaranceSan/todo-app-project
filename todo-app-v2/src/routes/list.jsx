@@ -192,6 +192,8 @@ export function List() {
 function TodoItem({ todo }) {
   const [showEdit, setShowEdit] = React.useState(false);
   const [done, setDone] = React.useState(todo.done);
+  const date = new Date();
+  const formatted = Intl.DateTimeFormat("fr").format(date);
   console.log(done, "done value");
   console.log(todo.done, "todo back");
 
@@ -208,7 +210,7 @@ function TodoItem({ todo }) {
       </Form>
 
       {/* {todo.done ? <span>X</span> : <span>0</span>} */}
-      <span>{todo.created}</span>
+      <span>{formatted}</span>
       <span>{todo.task}</span>
       <button onClick={() => setShowEdit(true)}>
         <AiOutlineEdit />
