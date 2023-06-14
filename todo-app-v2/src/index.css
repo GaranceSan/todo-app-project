@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montez");
-@import url("https://fonts.googleapis.com/css2?family=Cabin+Sketch");
+@import url("https://fonts.googleapis.com/css2?family=Homemade+Apple");
 html,
 body {
   padding: 0;
@@ -7,12 +6,11 @@ body {
   height: 100%;
 }
 body {
-  padding: 0;
-  margin: 0;
-  height: 100%;
+  background-color: #f7f7f7;
+  font-family: "Homemade+Apple", cursive;
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f7f7f7;
 }
 #root {
   display: grid;
@@ -40,8 +38,12 @@ body {
 } */
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: Allura, source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+h1 {
+  font-size: 2.5rem;
 }
 /*
 * forms styles
