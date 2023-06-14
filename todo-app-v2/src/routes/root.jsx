@@ -86,7 +86,7 @@ export function Root() {
   return (
     <>
       <aside id="sidebar">
-        <h1>Lists are here</h1>
+        <h1>Lists </h1>
         <Form
           method="post"
           onSubmit={(e) => {
@@ -97,7 +97,7 @@ export function Root() {
             newListInput.value = "";
           }}
         >
-          <label htmlFor="id-new-list-name">New List Name</label>
+          <label htmlFor="id-new-list-name">New List</label>
           <input name="new-list-name" type="text" id="id-new-list-name" />
           <button type="submit">
             <AiOutlinePlus />
