@@ -1,8 +1,57 @@
+.detailsHeader {
+  width: 100%;
+}
+.inputLine {
+  display: flex;
+}
+.inputNewTodo {
+  border-radius: 5px;
+}
 .ul {
   list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0;
+  background-color: rgb(246, 245, 245);
+  border-width: 5px;
+
+  border-style: ridge;
 }
 .li {
-  background-color: #e3b7d2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 150px;
+  max-width: 250px;
+  background-color: #fffddb;
   border-radius: 10px;
   margin: 10px;
+  padding: 0px;
+}
+
+.li:nth-child(odd) {
+  transform: rotate(5deg);
+  box-shadow: 5px 5px 8px #aaa;
+}
+.li:nth-child(even) {
+  transform: rotate(-3deg);
+  box-shadow: 5px 5px 8px #aaa;
+}
+.textDone {
+  text-decoration: line-through;
+}
+
+.editAndDelete {
+  display: flex;
+}
+
+@media (min-width: 700px) {
+  .ul {
+    padding: 20px;
+  }
+}
+
+.h3 {
+  font-size: 2rem;
 }

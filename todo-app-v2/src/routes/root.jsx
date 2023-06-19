@@ -6,6 +6,7 @@ import {
   redirect,
   useSubmit,
 } from "react-router-dom";
+import React from "react";
 import { BACKEND_URL } from "../common/constants";
 import { AiOutlinePlus } from "react-icons/ai";
 
@@ -74,6 +75,7 @@ export async function loader() {
 
 export function Root() {
   const { data: lists, errors } = useLoaderData();
+  const [menuOpen, setMenuOpen] = React.useState(false);
   const submit = useSubmit();
 
   // function handleSubmit(e) {
@@ -85,8 +87,18 @@ export function Root() {
   // }
   return (
     <>
-      <aside id="sidebar">
-        <h1>Lists </h1>
+      <header id="header">
+        <h1>Welcome to Garance's todo app</h1>
+      </header>
+      <aside className={`sidebar ${menuOpen ? "sidebar-open" : ""}`}>
+        <h2>Lists </h2>
+        <button
+          className="open-menu-button"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          Open
+        </button>
+
         <Form
           method="post"
           onSubmit={(e) => {
@@ -98,12 +110,14 @@ export function Root() {
           }}
         >
           <label htmlFor="id-new-list-name">New List</label>
-          <input name="new-list-name" type="text" id="id-new-list-name" />
-          <button type="submit">
-            <AiOutlinePlus />
-          </button>
+          <div className="inputList">
+            <input name="new-list-name" type="text" id="id-new-list-name" />
+            <button type="submit">
+              <AiOutlinePlus />
+            </button>
+          </div>
         </Form>
-        <div></div>
+
         <nav>
           {lists.length ? (
             <ul id="listoflist">
