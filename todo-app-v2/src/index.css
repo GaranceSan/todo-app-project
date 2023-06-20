@@ -54,7 +54,9 @@ body {
   /* background-color: #ffe7d3; */
   transition: all 0.4s ease-in-out;
   z-index: 500;
+
   background-image: url("https://www.transparenttextures.com/patterns/dark-circles.png");
+  background-color: white;
 }
 .sidebar-open {
   left: 0;
@@ -64,12 +66,14 @@ body {
   border-radius: 0px;
   margin-top: 40px;
   flex-direction: column;
-  right: -50px;
+  right: -35px;
   width: 40px;
   height: 60px;
+  top: 56px;
   background-image: url("https://www.transparenttextures.com/patterns/dark-circles.png");
   background-color: white;
   cursor: pointer;
+  border: none;
 }
 
 #listoflist {
