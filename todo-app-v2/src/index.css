@@ -1,4 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Homemade+Apple");
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
 html,
 body {
   padding: 0;
@@ -6,65 +12,148 @@ body {
   height: 100%;
 }
 body {
-  background-color: #f7f7f7;
   font-family: "Homemade+Apple", cursive;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #fff;
 }
 #root {
-  display: grid;
+  /* display: grid;
   grid-template-columns: 30% 70%;
+  grid-template-rows: 70px auto;*/
   height: 100%;
 }
+#header {
+  width: 100%;
+  position: fixed;
+  /* height: auto; */
+  max-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: white;
+  background-image: url("https://www.transparenttextures.com/patterns/dark-circles.png");
+  /* background-color: #ffe7d3; */
+  /* font-size: 25px;
+  font-weight: 500; */
+  z-index: 1000;
+}
 
-#sidebar {
-  padding-left: 10px;
+.sidebar {
+  position: fixed;
+  width: 250px;
+  top: 0;
+  bottom: 0;
+  left: -250px;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 10px 10px 10px;
+  margin-right: 10px;
+  /* background-color: #ffe7d3; */
+  transition: all 0.4s ease-in-out;
+  z-index: 500;
+
+  background-image: url("https://www.transparenttextures.com/patterns/dark-circles.png");
+  background-color: white;
+}
+.sidebar-open {
+  left: 0;
+}
+.open-menu-button {
+  position: absolute;
+  border-radius: 0px;
+  margin-top: 40px;
+  flex-direction: column;
+  right: -35px;
+  width: 40px;
+  height: 60px;
+  top: 56px;
+  background-image: url("https://www.transparenttextures.com/patterns/dark-circles.png");
+  background-color: white;
+  cursor: pointer;
+  border: none;
 }
 
 #listoflist {
-  background-color: #f5c27d;
-  color: #8c4a4a;
+  background-color: #d0fffe;
+  /* color: #8c4a4a; */
   border-radius: 10px;
+  margin-right: 20px;
 }
 
 #details {
-  padding-left: 10px;
-}
-
-/* #sidebar > * {
-  padding-left: 2rem;
-  padding-right: 2rem;
-} */
-
-code {
-  font-family: Allura, source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  padding: 130px 20px 20px 20px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center;
+  align-items: start; */
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
+  /* background-color: white;
+  background-image: url("https://www.transparenttextures.com/patterns/dark-circles.png"); */
+  text-align: center;
+}
+
+h2 {
+  font-size: 2rem;
+  background-image: none;
+}
+label {
+  padding: 10px;
 }
 /*
 * forms styles
 */
-input {
+.input {
+  display: flex;
   padding: 5px 10px;
   border-radius: 6px;
   border: none;
-  background-color: #bfe7f6;
+  background-color: #fffddb;
+}
+#id-new-list-name {
+  background-color: #fffddb;
+  border-radius: 5px;
 }
 
 button {
-  display: inline-block;
+  display: flex;
   margin: 5px;
-  background-color: #ffe666;
+  background-color: #d0fffe;
   text-align: center;
   border-radius: 50px;
 }
 
-@media (max-width: 480px) {
-  #root {
-    padding-top: 0;
-  }
+.inputList {
+  display: flex;
+  margin-right: 10px;
+  align-items: stretch;
 }
+
+@media (min-width: 700px) {
+  .open-menu-button {
+    display: none;
+  }
+
+  #header {
+    max-height: 80px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .sidebar {
+    left: 0;
+  }
+  #details {
+    margin-left: 250px;
+    justify-content: flex-start;
+    width: calc(100% - 250px);
+  }
+} /* end media 700 */

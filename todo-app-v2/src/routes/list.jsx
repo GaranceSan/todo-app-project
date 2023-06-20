@@ -3,6 +3,7 @@ import React from "react";
 import { useLoaderData, Form, useSubmit } from "react-router-dom";
 import styles from "./list.module.css";
 import {
+  AiOutlinePushpin,
   AiOutlinePlus,
   AiOutlineBorder,
   AiOutlineCheckSquare,
@@ -166,17 +167,26 @@ export function List() {
   }
 
   return (
-    <div>
-      <h1 className={styles.h1}>{list.list_name}</h1>
-      <Form method="post" onSubmit={handleSubmit}>
-        <input type="hidden" name="todo-type" value="new" />
-        <label htmlFor="id-new-todo">New Todo</label>
+    <>
+      <div className={styles.detailsHeader}>
+        <h3 className={styles.h3}>{list.list_name}</h3>
 
-        <input name="new-todo-name" type="text" id="id-new-todo" />
-        <button type="submit">
-          <AiOutlinePlus />
-        </button>
-      </Form>
+        <Form method="post" onSubmit={handleSubmit}>
+          <input type="hidden" name="todo-type" value="new" />
+          <label htmlFor="id-new-todo">New Todo</label>
+          <div className={styles.inputLine}>
+            <input
+              className={styles.inputNewTodo}
+              name="new-todo-name"
+              type="text"
+              id="id-new-todo"
+            />
+            <button type="submit">
+              <AiOutlinePlus />
+            </button>
+          </div>
+        </Form>
+      </div>
 
       {list.todos.length ? (
         <ul className={styles.ul}>
@@ -185,7 +195,7 @@ export function List() {
           ))}
         </ul>
       ) : null}
-    </div>
+    </>
   );
 }
 
@@ -204,46 +214,51 @@ function TodoItem({ todo }) {
         <input type="hidden" name="todo-id" value={todo.id} />
         <input type="hidden" name="todo-done" value={todo.done} />
         <input type="hidden" name="todo-content" value={todo.task} />
+      </Form>
+
+      <span>
+        <AiOutlinePushpin />
+      </span>
+      <span>{formatted}</span>
+      <span className={done ? styles.textDone : ""}>{todo.task}</span>
+      <div className={styles.editAndDelete}>
         <button type="submit" onClick={() => setDone(!done)}>
           {done ? <AiOutlineCheckSquare /> : <AiOutlineBorder />}
         </button>
-      </Form>
+        <button onClick={() => setShowEdit(true)}>
+          <AiOutlineEdit />
+        </button>
 
-      {/* {todo.done ? <span>X</span> : <span>0</span>} */}
-      <span>{formatted}</span>
-      <span>{todo.task}</span>
-      <button onClick={() => setShowEdit(true)}>
-        <AiOutlineEdit />
-      </button>
-      {showEdit ? (
-        <Form
-          method="post"
-          onSubmit={(event) => {
-            setShowEdit(false);
-          }}
-        >
-          <input type="hidden" name="todo-type" value="update" />
+        {showEdit ? (
+          <Form
+            method="post"
+            onSubmit={(event) => {
+              setShowEdit(false);
+            }}
+          >
+            <input type="hidden" name="todo-type" value="update" />
+            <input type="hidden" name="todo-id" value={todo.id} />
+            <input
+              name="new-todo-content"
+              type="text"
+              id="id-new-tod"
+              defaultValue={todo.task}
+            />
+            <button type="submit">
+              Submit
+              <AiOutlineEdit />
+            </button>
+          </Form>
+        ) : null}
+
+        <Form method="post">
+          <input type="hidden" name="todo-type" value="delete" />
           <input type="hidden" name="todo-id" value={todo.id} />
-          <input
-            name="new-todo-content"
-            type="text"
-            id="id-new-tod"
-            defaultValue={todo.task}
-          />
           <button type="submit">
-            Submit
-            <AiOutlineEdit />
+            <AiOutlineDelete />
           </button>
         </Form>
-      ) : null}
-
-      <Form method="post">
-        <input type="hidden" name="todo-type" value="delete" />
-        <input type="hidden" name="todo-id" value={todo.id} />
-        <button type="submit">
-          <AiOutlineDelete />
-        </button>
-      </Form>
+      </div>
     </li>
   );
 }
