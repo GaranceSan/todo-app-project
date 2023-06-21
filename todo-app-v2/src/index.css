@@ -67,7 +67,7 @@ body {
   margin-top: 40px;
   flex-direction: column;
   right: -35px;
-  width: 40px;
+  width: 50px;
   height: 60px;
   top: 56px;
   background-image: url("https://www.transparenttextures.com/patterns/dark-circles.png");
@@ -77,7 +77,7 @@ body {
 }
 
 #listoflist {
-  background-color: #d0fffe;
+  background-color: #ffd3fd;
   /* color: #8c4a4a; */
   border-radius: 10px;
   margin-right: 20px;
@@ -124,7 +124,7 @@ label {
 button {
   display: flex;
   margin: 5px;
-  background-color: #d0fffe;
+  background-color: #ffd3fd;
   text-align: center;
   border-radius: 50px;
 }

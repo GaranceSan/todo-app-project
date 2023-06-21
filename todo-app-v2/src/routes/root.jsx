@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { BACKEND_URL } from "../common/constants";
 import { AiOutlinePlus } from "react-icons/ai";
+import Hamburger from "hamburger-react";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -96,7 +97,7 @@ export function Root() {
           className="open-menu-button"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          Open
+          <Hamburger />
         </button>
 
         <Form
