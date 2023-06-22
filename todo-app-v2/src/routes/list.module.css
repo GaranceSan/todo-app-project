@@ -4,9 +4,7 @@
 .inputLine {
   display: flex;
 }
-.inputNewTodo {
-  border-radius: 5px;
-}
+
 .ul {
   list-style: none;
   display: flex;
@@ -21,13 +19,32 @@
 .li {
   display: flex;
   flex-direction: column;
+  inline-size: 145px;
+  word-break: break-word;
+
   align-items: center;
-  min-width: 150px;
-  max-width: 250px;
+  min-width: 145px;
+  max-width: 180px;
+
   background-color: #fffddb;
   border-radius: 10px;
   margin: 10px;
-  padding: 0px;
+  padding: 5px;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.correctInput {
+  display: flex;
+  flex-wrap: wrap;
+
+  inline-size: 145px;
+  overflow-wrap: break-word;
+  height: auto;
 }
 
 .li:nth-child(odd) {

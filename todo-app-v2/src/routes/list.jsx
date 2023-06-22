@@ -12,7 +12,6 @@ import {
 } from "react-icons/ai";
 
 export async function action({ request, params }) {
-  console.log(request.method);
   const formData = await request.formData();
   const submissionType = formData.get("todo-type");
   const listId = Number(params.listId);
@@ -176,10 +175,10 @@ export function List() {
           <label htmlFor="id-new-todo">New Todo</label>
           <div className={styles.inputLine}>
             <input
-              className={styles.inputNewTodo}
               name="new-todo-name"
               type="text"
               id="id-new-todo"
+              maxLength="45"
             />
             <button type="submit">
               <AiOutlinePlus />
@@ -220,44 +219,58 @@ function TodoItem({ todo }) {
         <AiOutlinePushpin />
       </span>
       <span>{formatted}</span>
-      <span className={done ? styles.textDone : ""}>{todo.task}</span>
+      {showEdit ? null : (
+        <span className={done ? styles.textDone : ""}>{todo.task}</span>
+      )}
       <div className={styles.editAndDelete}>
-        <button type="submit" onClick={() => setDone(!done)}>
-          {done ? <AiOutlineCheckSquare /> : <AiOutlineBorder />}
-        </button>
-        <button onClick={() => setShowEdit(true)}>
-          <AiOutlineEdit />
-        </button>
+        {showEdit ? null : (
+          <>
+            <button onClick={() => setDone(!done)}>
+              {done ? <AiOutlineCheckSquare /> : <AiOutlineBorder />}
+            </button>
+            <button onClick={() => setShowEdit(true)}>
+              <AiOutlineEdit />
+            </button>
+          </>
+        )}
 
         {showEdit ? (
           <Form
+            className={styles.form}
             method="post"
             onSubmit={(event) => {
               setShowEdit(false);
             }}
           >
-            <input type="hidden" name="todo-type" value="update" />
-            <input type="hidden" name="todo-id" value={todo.id} />
-            <input
-              name="new-todo-content"
-              type="text"
-              id="id-new-tod"
-              defaultValue={todo.task}
-            />
+            <div>
+              <input type="hidden" name="todo-type" value="update" />
+              <input type="hidden" name="todo-id" value={todo.id} />
+              <textarea
+                cols="145"
+                rows="2"
+                className={styles.correctInput}
+                name="new-todo-content"
+                type="text"
+                id="id-new-tod"
+                defaultValue={todo.task}
+                maxLength="45"
+              />
+            </div>
             <button type="submit">
-              Submit
               <AiOutlineEdit />
             </button>
           </Form>
         ) : null}
 
-        <Form method="post">
-          <input type="hidden" name="todo-type" value="delete" />
-          <input type="hidden" name="todo-id" value={todo.id} />
-          <button type="submit">
-            <AiOutlineDelete />
-          </button>
-        </Form>
+        {showEdit ? null : (
+          <Form method="post">
+            <input type="hidden" name="todo-type" value="delete" />
+            <input type="hidden" name="todo-id" value={todo.id} />
+            <button type="submit">
+              <AiOutlineDelete />
+            </button>
+          </Form>
+        )}
       </div>
     </li>
   );
