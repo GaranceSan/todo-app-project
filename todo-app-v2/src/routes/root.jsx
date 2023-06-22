@@ -13,12 +13,10 @@ import Hamburger from "hamburger-react";
 
 export async function action({ request }) {
   const formData = await request.formData();
-
   const listType = formData.get("list-type");
   if (listType === "delete-list") {
     const listId = formData.get("list-id");
     const url = `${BACKEND_URL}/todos/${listId}/`;
-    console.log(url);
     const requestOptions = {
       method: "DELETE",
       headers: {
@@ -62,10 +60,8 @@ export async function action({ request }) {
         actionResponse.errors = ["Unable to create a new list"];
         return actionResponse;
       }
-
       //get data from res
       const data = await res.json();
-      console.log(data);
       const redirectUrl = `/lists/${data.id}`;
       return redirect(redirectUrl);
     } catch (err) {
