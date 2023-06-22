@@ -76,12 +76,24 @@ body {
   cursor: pointer;
   border: none;
 }
+.deletelist {
+  display: flex;
+}
 
 #listoflist {
   background-color: #ffd3fd;
   /* color: #8c4a4a; */
   border-radius: 10px;
   margin-right: 20px;
+  padding: 10px;
+}
+#listoflist li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#listoflist button {
+  border: none;
 }
 
 #details {

@@ -8,43 +8,71 @@ import {
 } from "react-router-dom";
 import React from "react";
 import { BACKEND_URL } from "../common/constants";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 import Hamburger from "hamburger-react";
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const newListName = formData.get("new-list-name");
-  const url = `${BACKEND_URL}/todos/new/`;
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "content-Type": "application/json",
-    },
-    body: JSON.stringify({ list_name: newListName.trim() }),
-  };
 
-  const actionResponse = {
-    data: null,
-    errors: null,
-  };
+  const listType = formData.get("list-type");
+  if (listType === "delete-list") {
+    const listId = formData.get("list-id");
+    const url = `${BACKEND_URL}/todos/${listId}/`;
+    console.log(url);
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "content-Type": "application/json",
+      },
+    };
+    try {
+      const response = await fetch(url, requestOptions);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      return null;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+    return null;
+  }
 
-  //fetch lists from back as res
-  try {
-    const res = await fetch(url, requestOptions);
-    if (!res.ok) {
+  if (listType === "new-list") {
+    const newListName = formData.get("new-list-name");
+    const url = `${BACKEND_URL}/todos/new/`;
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "content-Type": "application/json",
+      },
+      body: JSON.stringify({ list_name: newListName.trim() }),
+    };
+
+    const actionResponse = {
+      data: null,
+      errors: null,
+    };
+
+    //fetch lists from back as res
+
+    try {
+      const res = await fetch(url, requestOptions);
+      if (!res.ok) {
+        actionResponse.errors = ["Unable to create a new list"];
+        return actionResponse;
+      }
+
+      //get data from res
+      const data = await res.json();
+      console.log(data);
+      const redirectUrl = `/lists/${data.id}`;
+      return redirect(redirectUrl);
+    } catch (err) {
+      console.error(err);
       actionResponse.errors = ["Unable to create a new list"];
       return actionResponse;
     }
-
-    //get data from res
-    const data = await res.json();
-    console.log(data);
-    const redirectUrl = `/lists/${data.id}`;
-    return redirect(redirectUrl);
-  } catch (err) {
-    console.error(err);
-    actionResponse.errors = ["Unable to create a new list"];
-    return actionResponse;
   }
 } // end action
 
@@ -79,13 +107,6 @@ export function Root() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const submit = useSubmit();
 
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   const formData = new FormData(e.currentTarget);
-  //   submit(formData, { method: "post" });
-  //   const input = document.getElementById("id-new-list-name");
-  //   input.value = "";
-  // }
   return (
     <>
       <header id="header">
@@ -105,6 +126,7 @@ export function Root() {
           onSubmit={(e) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
+            console.log(formData);
             submit(formData, { method: "post" });
             const newListInput = document.getElementById("id-new-list-name");
             newListInput.value = "";
@@ -112,6 +134,7 @@ export function Root() {
         >
           <label htmlFor="id-new-list-name">New List</label>
           <div className="inputList">
+            <input type="hidden" name="list-type" value="new-list" />
             <input name="new-list-name" type="text" id="id-new-list-name" />
             <button type="submit">
               <AiOutlinePlus />
@@ -125,6 +148,13 @@ export function Root() {
               {lists.map((list) => (
                 <li key={list.id}>
                   <Link to={`lists/${list.id}`}>{list.list_name}</Link>
+                  <Form method="post">
+                    <input type="hidden" name="list-type" value="delete-list" />
+                    <input type="hidden" name="list-id" value={list.id} />
+                    <button type="submit">
+                      <AiOutlineDelete />
+                    </button>
+                  </Form>
                 </li>
               ))}
             </ul>

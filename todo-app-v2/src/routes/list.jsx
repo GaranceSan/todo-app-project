@@ -12,7 +12,6 @@ import {
 } from "react-icons/ai";
 
 export async function action({ request, params }) {
-  console.log(request.method);
   const formData = await request.formData();
   const submissionType = formData.get("todo-type");
   const listId = Number(params.listId);
@@ -179,7 +178,7 @@ export function List() {
               name="new-todo-name"
               type="text"
               id="id-new-todo"
-              maxlength="45"
+              maxLength="45"
             />
             <button type="submit">
               <AiOutlinePlus />
@@ -237,7 +236,7 @@ function TodoItem({ todo }) {
 
         {showEdit ? (
           <Form
-            className={styles.Form}
+            className={styles.form}
             method="post"
             onSubmit={(event) => {
               setShowEdit(false);
@@ -254,7 +253,7 @@ function TodoItem({ todo }) {
                 type="text"
                 id="id-new-tod"
                 defaultValue={todo.task}
-                maxlength="45"
+                maxLength="45"
               />
             </div>
             <button type="submit">
