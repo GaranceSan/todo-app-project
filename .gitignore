@@ -55,3 +55,4 @@ dev.py
 staging.py
 production.py
 .env
+static
