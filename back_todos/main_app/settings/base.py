@@ -79,6 +79,7 @@ WSGI_APPLICATION = "main_app.wsgi.application"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
+    "http://todo-api.garancesan.com"
 ]
 
 REST_FRAMEWORK = {
